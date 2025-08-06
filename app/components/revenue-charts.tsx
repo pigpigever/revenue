@@ -1,8 +1,27 @@
 'use client';
 
 import React from 'react';
-import ReactECharts from 'echarts-for-react';
 import {EChartsOption} from 'echarts-for-react/src/types';
+import echarts from '@/app/components/echarts';
+import dynamic from 'next/dynamic';
+import {Box, CircularProgress} from '@mui/material';
+
+const ReactECharts = dynamic(() => import('echarts-for-react'),
+  {
+    ssr: false,
+    loading: () => (
+      <Box
+        height={300}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <CircularProgress size={32} />
+      </Box>
+    ),
+  }
+);
+
 
 const data = [
   { month: '2021/01', revenue: 900, price: 140 },
@@ -192,7 +211,13 @@ const options: EChartsOption = {
 };
 
 const RevenueECharts = () => {
-  return <ReactECharts option={options} style={{ width: '100%', height: 450 }} />;
+  return (
+    <ReactECharts
+      echarts={echarts}
+      option={options}
+      style={{ width: '100%', height: 450 }}
+    />
+  );
 };
 
 export default RevenueECharts;
