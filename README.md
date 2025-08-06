@@ -1,6 +1,8 @@
 # ⭐️ Stark Tech 前端评测项目
 
-本项目用于 Stark Tech 前端评测，不做其他用途使用。
+页面地址：https://revenue-nine.vercel.app/
+
+免责声明：本项目用于 Stark Tech 前端评测，不做其他用途使用。
 
 ## 🧱 技术栈
 
