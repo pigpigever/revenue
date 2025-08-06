@@ -1,3 +1,4 @@
+'use client';
 import Navbar from '@/app/components/navbar';
 import Search from '@/app/components/search';
 import {Box, Container} from '@mui/material';

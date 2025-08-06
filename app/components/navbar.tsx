@@ -1,8 +1,9 @@
-import * as React from 'react'
-import {Box} from "@mui/material";
+'use client';
+import * as React from 'react';
+import {Box} from '@mui/material';
 
 export interface NavbarProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const Navbar: React.FC<NavbarProps> = ({children}) => {
@@ -20,7 +21,7 @@ const Navbar: React.FC<NavbarProps> = ({children}) => {
     >
       {children}
     </Box>
-  )
-}
+  );
+};
 
 export default Navbar;
