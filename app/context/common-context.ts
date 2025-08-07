@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {StockInfo} from '@/app/api/get-tw-stock-info';
+import {DEFAULT_YEAR} from '@/app/const';
 
 export const defaultStockInfo = {
   date: '',
@@ -10,13 +11,13 @@ export const defaultStockInfo = {
 };
 
 const CommonContext = React.createContext<{
-  startTime: string;
-  endTime: string;
+  selectYear: number;
+  setSelectYear: (year: number) => void;
   currentStockInfo: StockInfo;
   setCurrentStockInfo: (currentStockInfo: StockInfo) => void;
 }>({
-  startTime: '',
-  endTime: '',
+  selectYear: DEFAULT_YEAR + 1,
+  setSelectYear: () => {},
   currentStockInfo: defaultStockInfo,
   setCurrentStockInfo: () => {}
 });

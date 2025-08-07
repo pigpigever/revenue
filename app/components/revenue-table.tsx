@@ -8,12 +8,19 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
+import {RevenueMonthItem} from '@/app/api/get-tw-stock-month-revenue';
+import {YoyGrowthItem} from '@/app/context/revenue-context';
+import {addThousandsSeparator} from '@/app/utils';
 
-type RevenueTableProps = {
+export type RevenueTableProps = {
   dates: string[];
-  revenue: string[];
-  yoy: string[];
+  revenue: RevenueMonthItem[];
+  yoy: YoyGrowthItem[];
 };
+
+export type RevenueTableHandle = {
+  scrollToRight: () => void;
+}
 
 // 公共样式提取
 const stickyLeftCellStyle = (bgColor: string = '#fff', zIndex = 1) => ({
@@ -41,9 +48,28 @@ const cellBorderStyle = (hasLeftBorder: boolean, hasTopBorder = false) => ({
   borderRight: '1px solid #e3e3e3',
 });
 
-const RevenueTable: React.FC<RevenueTableProps> = ({ dates, revenue, yoy }) => {
+const RevenueTable = React.forwardRef<RevenueTableHandle, RevenueTableProps>(({ dates, revenue, yoy }, ref) => {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useImperativeHandle(ref, () => {
+    return {
+      scrollToRight: () => {
+        if (containerRef.current) {
+          containerRef.current.scrollLeft = containerRef.current.scrollWidth;
+        }
+      }
+    };
+  });
+
   return (
-    <TableContainer component={Box} sx={{ maxHeight: 440, overflow: 'auto' }}>
+    <TableContainer
+      ref={containerRef}
+      component={Box}
+      sx={{
+        maxHeight: 440,
+        overflow: 'auto'
+      }}
+    >
       <Table stickyHeader sx={{ minWidth: 700 }}>
         <TableHead>
           <TableRow>
@@ -78,13 +104,13 @@ const RevenueTable: React.FC<RevenueTableProps> = ({ dates, revenue, yoy }) => {
             <TableCell sx={stickyLeftCellStyle()}>
               每月營收
             </TableCell>
-            {revenue.map((val, idx) => (
+            {revenue.map((item, idx) => (
               <TableCell
                 key={idx}
                 align="center"
                 sx={cellBorderStyle(idx === 0)}
               >
-                {val}
+                {addThousandsSeparator((item.revenue / 1000).toString())}
               </TableCell>
             ))}
           </TableRow>
@@ -94,7 +120,7 @@ const RevenueTable: React.FC<RevenueTableProps> = ({ dates, revenue, yoy }) => {
             <TableCell sx={stickyLeftCellStyle('#f6f8fa')}>
               單月營收年增率 (%)
             </TableCell>
-            {yoy.map((val, idx) => (
+            {yoy.map((item, idx) => (
               <TableCell
                 key={idx}
                 align="center"
@@ -103,7 +129,7 @@ const RevenueTable: React.FC<RevenueTableProps> = ({ dates, revenue, yoy }) => {
                   backgroundColor: '#f6f8fa',
                 }}
               >
-                {val}
+                {item.value}
               </TableCell>
             ))}
           </TableRow>
@@ -111,6 +137,8 @@ const RevenueTable: React.FC<RevenueTableProps> = ({ dates, revenue, yoy }) => {
       </Table>
     </TableContainer>
   );
-};
+});
+
+RevenueTable.displayName = 'RevenueTable';
 
 export default RevenueTable;

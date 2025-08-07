@@ -18,8 +18,9 @@ export interface GetTwStockInfoResponse {
   data: StockInfo[];
 }
 
-const getTwStockInfo = (params?: GetTwStockInfoParams): Promise<GetTwStockInfoResponse> => {
-  return request.get('/api/v4/data', {params: {dataset: API_DATASETS.TaiwanStockInfo, ...params}}).then(res => res.data);
+const getTwStockInfo = async (params?: GetTwStockInfoParams): Promise<GetTwStockInfoResponse> => {
+  const res = await request.get('/api/v4/data', {params: {dataset: API_DATASETS.TaiwanStockInfo, ...params}});
+  return res.data;
 };
 
 export default getTwStockInfo;

@@ -21,11 +21,12 @@
 │   │   ├── get-tw-stock-month-revenue.ts
 │   │   └── request.ts
 │   ├── components
-│   │   ├── chart-panel.tsx
+│   │   ├── chart
+│   │   │   ├── echarts.ts
+│   │   │   ├── panel.tsx
+│   │   │   └── revenue-chart.tsx
 │   │   ├── company-info.tsx
-│   │   ├── echarts.ts
 │   │   ├── navbar.tsx
-│   │   ├── revenue-charts.tsx
 │   │   ├── revenue-detail.tsx
 │   │   ├── revenue-table.tsx
 │   │   ├── search.tsx
@@ -33,11 +34,13 @@
 │   ├── const.ts
 │   ├── context
 │   │   ├── common-context.ts
-│   │   └── common-provider.tsx
+│   │   ├── common-provider.tsx
+│   │   ├── revenue-context.ts
+│   │   └── revenue-provider.tsx
 │   ├── favicon.ico
 │   ├── globals.css
 │   ├── hooks
-│   │   └── use-month-revenue.ts
+│   │   └── use-month-revenue-data-fetch.ts
 │   ├── layout.tsx
 │   ├── page.tsx
 │   └── utils.ts

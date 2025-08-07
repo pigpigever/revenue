@@ -4,19 +4,22 @@ import Navbar from '@/app/components/navbar';
 import Search from '@/app/components/search';
 import {Box, Container} from '@mui/material';
 import CompanyInfo from '@/app/components/company-info';
-import ChartPanel from '@/app/components/chart-panel';
+import ChartPanel from '@/app/components/chart/panel';
 import RevenueDetail from '@/app/components/revenue-detail';
 import getTwStockInfo, {StockInfo} from '@/app/api/get-tw-stock-info';
 import {getUniqueArray} from '@/app/utils';
 import CommonProvider from '@/app/context/common-provider';
 import {useCommonContext} from '@/app/context/common-context';
-import useMonthRevenue from '@/app/hooks/use-month-revenue';
+import useMonthRevenueDataFetch from '@/app/hooks/use-month-revenue-data-fetch';
+import RevenueProvider from '@/app/context/revenue-provider';
+import {useRevenueContext} from '@/app/context/revenue-context';
 
 const Home = () => {
-  const {currentStockInfo, setCurrentStockInfo} = useCommonContext();
+  const {currentStockInfo, setCurrentStockInfo, setSelectYear} = useCommonContext();
+  const {loading} = useRevenueContext();
   const [results, setResults] = React.useState<StockInfo[]>([]);
 
-  useMonthRevenue();
+  useMonthRevenueDataFetch();
 
   const handleSearch = async (value: string) => {
     try {
@@ -54,7 +57,10 @@ const Home = () => {
           ticker={currentStockInfo?.stock_id}
         />
         <Box sx={{marginTop: '16px'}}>
-          <ChartPanel />
+          <ChartPanel
+            loading={loading}
+            onYearChange={year => setSelectYear(year)}
+          />
         </Box>
         <Box sx={{marginTop: '16px'}}>
           <RevenueDetail />
@@ -67,7 +73,9 @@ const Home = () => {
 const HomeWrapper = () => {
   return (
     <CommonProvider>
-      <Home />
+      <RevenueProvider>
+        <Home />
+      </RevenueProvider>
     </CommonProvider>
   );
 };

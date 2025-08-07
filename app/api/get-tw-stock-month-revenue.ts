@@ -7,8 +7,29 @@ export interface GetTwStockMonthRevenueParams {
   end_date: string;
 }
 
-const getTwStockMonthMonthRevenue = (params: GetTwStockMonthRevenueParams) => {
-  return request.get('/api/v4/data', {params: {dataset: API_DATASETS.TaiwanStockMonthRevenue, ...params}}).then(res => res.data);
+export type RevenueMonthItem = {
+  country: string;
+  // YYYY-MM-DD
+  date: string;
+  // 股票价格
+  revenue: number;
+  // 每月营收
+  revenue_month: number;
+  // 年份
+  revenue_year: number;
+  // 股票 id
+  stock_id: string;
+}
+
+export interface GetTwStockMonthRevenueResponse {
+  msg: string;
+  status: number;
+  data: RevenueMonthItem[]
+}
+
+const getTwStockMonthMonthRevenue = async (params: GetTwStockMonthRevenueParams): Promise<GetTwStockMonthRevenueResponse> => {
+  const res = await request.get('/api/v4/data', {params: {dataset: API_DATASETS.TaiwanStockMonthRevenue, ...params}});
+  return res.data;
 };
 
 export default getTwStockMonthMonthRevenue;
