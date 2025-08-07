@@ -8,6 +8,14 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
   swcMinify: true,
+  async rewrites() {
+    return [
+      {
+        source: '/api/v4/:path*',
+        destination: 'https://api.finmindtrade.com/api/v4/:path*',
+      },
+    ];
+  },
 };
 
 export default isAnalyze
