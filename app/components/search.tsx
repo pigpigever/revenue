@@ -130,7 +130,13 @@ const Search: React.FC<SearchProps> = ({
             width: anchorRef.current?.offsetWidth ?? undefined,
           }}
         >
-          <Paper elevation={3}>
+          <Paper
+            elevation={3}
+            sx={{
+              maxHeight: 300,
+              overflowY: 'auto',
+            }}
+          >
             {!searchResults.length ? (
               <>
                 {loading ? (
@@ -161,7 +167,9 @@ const Search: React.FC<SearchProps> = ({
                 )}
               </>
             ) : (
-              <List dense>
+              <List
+                dense
+              >
                 {searchResults.map((result, idx) => (
                   <ListItem key={idx} disablePadding>
                     <ListItemButton onClick={() => handleSelect(result)}>
