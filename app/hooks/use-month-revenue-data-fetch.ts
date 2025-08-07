@@ -34,7 +34,7 @@ const useMonthRevenueDataFetch = () => {
         return {
           revenue_year: item.revenue_year,
           revenue_month: item.revenue_month,
-          value: '0'
+          value: '無'
         };
       })
       // 需要过滤前面多出来一年的数据，否则展示上会有问题
@@ -84,6 +84,7 @@ const useMonthRevenueDataFetch = () => {
     } finally {
       setLoading(false);
     }
+    // eslint-disable-next-line max-len
   }, [currentStockInfo.stock_id, getXAxisData, getYoyGrowth, selectYear, setLoading, setRevenueMonthList, setXAxisData, setYoyGrowth]);
 
   React.useEffect(() => {

@@ -1,19 +1,23 @@
 'use client';
-import React, {useState, useRef} from 'react';
+import * as React from 'react';
 import {
-  TextField,
-  InputAdornment,
+  Box,
+  ClickAwayListener,
   IconButton,
-  Popper,
-  Paper,
+  InputAdornment,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
-  ClickAwayListener, Box,
+  Paper,
+  Popper,
+  TextField,
+  Typography,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import {StockInfo} from '@/app/api/get-tw-stock-info';
+import {debounce} from '@/app/utils';
+import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 
 interface SearchProps {
   placeholder?: string;
@@ -32,12 +36,19 @@ const Search: React.FC<SearchProps> = ({
   disabled = false,
   searchResults = [],
 }) => {
-  const [inputValue, setInputValue] = useState(value);
-  const [open, setOpen] = useState(false);
-  const anchorRef = useRef<HTMLInputElement>(null);
+  const [inputValue, setInputValue] = React.useState(value);
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef<HTMLInputElement>(null);
+
+  const debounceSearch = React.useMemo(() => {
+    return debounce(onSearch, 300);
+  }, [onSearch]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
+    const value = event.target.value;
+    debounceSearch(value);
+    setInputValue(value);
+    setOpen(true);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -109,7 +120,7 @@ const Search: React.FC<SearchProps> = ({
         />
         {/*搜索面板*/}
         <Popper
-          open={open && searchResults.length > 0}
+          open={open}
           anchorEl={anchorRef.current}
           placement="bottom-start"
           style={{
@@ -118,15 +129,31 @@ const Search: React.FC<SearchProps> = ({
           }}
         >
           <Paper elevation={3}>
-            <List dense>
-              {searchResults.map((result, idx) => (
-                <ListItem key={idx} disablePadding>
-                  <ListItemButton onClick={() => handleSelect(result)}>
-                    <ListItemText primary={`${result.stock_id} ${result.stock_name}`} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
+            {!searchResults.length ? (
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                height={100}
+                borderRadius={2}
+              >
+                <InsertChartOutlinedIcon sx={{ fontSize: 24, color: '#bdbdbd', mb: 1 }} />
+                <Typography variant="subtitle1" color="text.secondary">
+                  暫無數據
+                </Typography>
+              </Box>
+            ) : (
+              <List dense>
+                {searchResults.map((result, idx) => (
+                  <ListItem key={idx} disablePadding>
+                    <ListItemButton onClick={() => handleSelect(result)}>
+                      <ListItemText primary={`${result.stock_id} ${result.stock_name}`} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            )}
           </Paper>
         </Popper>
       </Box>
