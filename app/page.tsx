@@ -15,6 +15,7 @@ import RevenueProvider from '@/app/context/revenue-provider';
 import {useRevenueContext} from '@/app/context/revenue-context';
 
 const Home = () => {
+  const [searching, setSearching] = React.useState(false);
   const {currentStockInfo, setCurrentStockInfo, setSelectYear} = useCommonContext();
   const {loading} = useRevenueContext();
   const [results, setResults] = React.useState<StockInfo[]>([]);
@@ -23,6 +24,8 @@ const Home = () => {
 
   const handleSearch = async (value: string) => {
     try {
+      setResults([]);
+      setSearching(true);
       const res = await getTwStockInfo();
       const stockList = res.data ?? [];
       const results = stockList.filter(stock => {
@@ -31,6 +34,8 @@ const Home = () => {
       setResults(getUniqueArray(results, 'stock_id'));
     } catch (e) {
       console.error('handle search error', e);
+    } finally {
+      setSearching(false);
     }
   };
 
@@ -43,6 +48,7 @@ const Home = () => {
     <>
       <Navbar>
         <Search
+          loading={searching}
           searchResults={results}
           onSearch={handleSearch}
           onSelect={handleSelect}

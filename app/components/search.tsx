@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 import {
-  Box,
+  Box, CircularProgress,
   ClickAwayListener,
   IconButton,
   InputAdornment,
@@ -20,6 +20,7 @@ import {debounce} from '@/app/utils';
 import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 
 interface SearchProps {
+  loading: boolean;
   placeholder?: string;
   value?: string;
   onSearch: (value: string) => void;
@@ -31,6 +32,7 @@ interface SearchProps {
 const Search: React.FC<SearchProps> = ({
   placeholder = '輸入台／美股代號，查看公司價值',
   value = '',
+  loading,
   onSearch,
   onSelect,
   disabled = false,
@@ -130,19 +132,34 @@ const Search: React.FC<SearchProps> = ({
         >
           <Paper elevation={3}>
             {!searchResults.length ? (
-              <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-                height={100}
-                borderRadius={2}
-              >
-                <InsertChartOutlinedIcon sx={{ fontSize: 24, color: '#bdbdbd', mb: 1 }} />
-                <Typography variant="subtitle1" color="text.secondary">
-                  暫無數據
-                </Typography>
-              </Box>
+              <>
+                {loading ? (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: 80,
+                    }}
+                  >
+                    <CircularProgress size={24} />
+                  </Box>
+                ) : (
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    height={100}
+                    borderRadius={2}
+                  >
+                    <InsertChartOutlinedIcon sx={{ fontSize: 24, color: '#bdbdbd', mb: 1 }} />
+                    <Typography variant="subtitle1" color="text.secondary">
+                      暫無數據
+                    </Typography>
+                  </Box>
+                )}
+              </>
             ) : (
               <List dense>
                 {searchResults.map((result, idx) => (
