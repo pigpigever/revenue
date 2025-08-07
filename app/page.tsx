@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Navbar from '@/app/components/navbar';
 import Search from '@/app/components/search';
-import {Box, Container} from '@mui/material';
+import {Box, Container, createTheme, ThemeProvider} from '@mui/material';
 import CompanyInfo from '@/app/components/company-info';
 import ChartPanel from '@/app/components/chart/panel';
 import RevenueDetail from '@/app/components/revenue-detail';
@@ -76,13 +76,24 @@ const Home = () => {
   );
 };
 
+const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#1976d2',
+    },
+  },
+});
+
 const HomeWrapper = () => {
   return (
-    <CommonProvider>
-      <RevenueProvider>
-        <Home />
-      </RevenueProvider>
-    </CommonProvider>
+    <ThemeProvider theme={theme}>
+      <CommonProvider>
+        <RevenueProvider>
+          <Home />
+        </RevenueProvider>
+      </CommonProvider>
+    </ThemeProvider>
   );
 };
 

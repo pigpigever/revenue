@@ -23,7 +23,7 @@ const TabSwitcher: React.FC<TabSwitcherProps> = ({ selectedTab, onChange, tabs, 
       {tabs.map(({ key, label }) => {
         const isSelected = selectedTab === key;
         const color = isSelected ? '#fff' : 'black';
-        const bgColor = isSelected ? '#0386f4' : '#dfdfdf';
+        const bgColor = isSelected ? 'primary.main' : '#dfdfdf';
         const borderColor = isSelected ? '#dfdfdf' : '#dfdfdf';
         return (
           <Button
